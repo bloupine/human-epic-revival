@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Human Epic Revival</title>
+</head>
+
+<body>
+
+<h1>Human Epic Revival</h1>
+
+<a href="chasse.html">Chasse</a>
+
+<h2>PERSONNAGE</h2>
+
+<p>Nom : Bloupine</p>
+<p>Clan : Aucun</p>
+<p>Âge : 1 lune</p>
+<p>Métier : Aucun</p>
+
+<h3>Statistiques</h3>
+
+<p>Force : 5</p>
+<p>Endurance : 5</p>
+<p>Intelligence : 5</p>
+
+<br>
+
+<button>Courriel</button>
+<button>Amis</button>
+
+<p><em>Tout va bien pour toi, tu es en pleine santé.</em>
+
+<<h2>VIE SOCIALE</h2>
+
+<h3>Écrire un message</h3>
+<textarea rows="4" cols="50"></textarea>
+<br><br>
+<button>Envoyer</button>
+
+<h3>Messages reçus</h3>
+<p><strong>Joueur1 :</strong> Bienvenue !</p>
+
+<h3>Visiteurs</h3>
+<p>Personne n’est encore passé.</p>
+
+<br>
+
+<button>Effacer les messages</button>
+
+<h3>Journal</h3>
+<div id="journal">
+
+<p><em class="date"></em> Tu te réveilles dans un campement inconnu...</p>
+<p><em class="date"></em> Tu observes les alentours. Tout semble calme.</p>
+
+<h2>DESCRIPTION RP</h2>
+
+<p>Raconte ici l’histoire de ton personnage...</p>
+
+
+<script>
+
+let message = localStorage.getItem("nouveauMessage");
+
+if (message) {
+
+  let journal = document.getElementById("journal");
+
+  let nouveau = document.createElement("p");
+  let maintenant = new Date();
+
+    let date = maintenant.toLocaleDateString();
+    let heure = maintenant.toLocaleTimeString();
+
+    nouveau.textContent = "[" + date + " " + heure + "] " + message;
+
+  journal.prepend(nouveau);
+
+  localStorage.removeItem("nouveauMessage");
+}
+
+</script>
+</body>
+</html>

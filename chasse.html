@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chasse - Human Epic</title>
+</head>
+
+<body>
+<a href="index.html">Personnage</a>
+
+<h3>Onglets</h3>
+
+<button onclick="afficherSection('terrain')">Terrain</button>
+<button onclick="afficherSection('butin')">Mon butin</button>
+<button onclick="afficherSection('arme')">Mon arme</button>
+<button onclick="afficherSection('proies')">Les proies</button>
+
+<hr>
+
+
+<div id="terrain">
+
+  <p>Tous les jours à minuit, tu peux aller chasser. Tu peux choisir ici le terrain sur lequel tu veux te rendre. Le changement d'endroit te fait perdre 3 points de vie. 
+   </p><p id="actionActuelle"><em>Aucune action en cours</em></p>
+
+  <h3>Choix du terrain</h3>
+
+
+<p>Choisis où partir :</p>
+
+<button onclick="changerAction('dormir')">🌙 Dormir</button>
+ <p>Cela fait du bien de dormir, tu  gagnes 5 points de vie et de moral, et au moins tu ne risques pas de te blesser ou de te faire cambrioler.</p>
+
+<button onclick="changerAction('chasse en forêt')">🌲  Chasse en forêt</button>
+ <p>La forêt est bien sûr le terrain de chasse le plus habituel pour quelqu'un de la préhistoire comme toi. Elle te permet de trouver de gros animaux mais peut être dangereuse.</p>
+
+<button onclick="changerAction('chasse dans les marais')">🌿 Chasse aux marais</button>
+
+<button onclick="changerAction('cueillette')">🍓 La cueillette</button>
+</div>
+
+<div id="butin">
+  <h3>Mon butin</h3>
+  <p>Tu n’as encore rien chassé.</p>
+</div>
+
+<div id="arme">
+  <h3>Mon arme</h3>
+  <p>Arme actuelle : Lance en bois</p>
+</div>
+
+<div id="proies">
+  <h3>Les proies</h3>
+  <p>Liste des proies disponibles...</p>
+</div>
+
+<script>
+
+    function afficherSection(section) {
+
+  document.getElementById("terrain").style.display = "none";
+  document.getElementById("butin").style.display = "none";
+  document.getElementById("arme").style.display = "none";
+  document.getElementById("proies").style.display = "none";
+
+  document.getElementById(section).style.display = "block";
+}
+
+afficherSection("terrain");
+
+function changerAction(texte) {
+  document.getElementById("actionActuelle").textContent = "Actuellement tu fais : " + texte;
+}
+
+function dormir() {
+
+  let message = "Tu as dormi et récupéré de l'énergie.";
+
+  localStorage.setItem("nouveauMessage", message);
+
+}
+
+
+
+</script>
+
+
+</body>
+</html>
