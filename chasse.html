@@ -30,17 +30,23 @@
 <button onclick="changerAction('dormir')">🌙 Dormir</button>
  <p>Cela fait du bien de dormir, tu  gagnes 5 points de vie et de moral, et au moins tu ne risques pas de te blesser ou de te faire cambrioler.</p>
 
-<button onclick="changerAction('chasse en forêt')">🌲  Chasse en forêt</button>
+<button onclick="changerAction('chasse en forêt'); chasserForet();"> Chasse en forêt
+</button>
  <p>La forêt est bien sûr le terrain de chasse le plus habituel pour quelqu'un de la préhistoire comme toi. Elle te permet de trouver de gros animaux mais peut être dangereuse.</p>
 
 <button onclick="changerAction('chasse dans les marais')">🌿 Chasse aux marais</button>
+ <p>Fantastique les marais, ça grouille de bestioles et de champignons. Le seul danger vraiment sérieux provient des hippopotames qui n'aiment pas être dérangés.</p>
 
 <button onclick="changerAction('cueillette')">🍓 La cueillette</button>
+ <p>Pas d'arme, pas de problème. Tu peux partir à la cueillette; ça te permettra de ramener quelques éléments suffisants pour te rassasier.</p>
 </div>
 
 <div id="butin">
   <h3>Mon butin</h3>
-  <p>Tu n’as encore rien chassé.</p>
+
+  <ul id="listeButin">
+    <li>Aucun butin pour le moment</li>
+  </ul>
 </div>
 
 <div id="arme">
@@ -50,7 +56,59 @@
 
 <div id="proies">
   <h3>Les proies</h3>
-  <p>Liste des proies disponibles...</p>
+  <p>Liste des proies disponibles</p>
+
+  <h3>Chasse en forêt</h3>
+
+<ul>
+ <li> Escargot - 0.2 kilo. Conserve 12 lunes. Prix 8 rotules</li> 
+<li>Agneau hargneux - 0.6 kilo. Conserve 14 lunes. Prix 20 rotules</li>
+<li>Tigre à dents de sabre - 1 kilo. Conserve 40 lunes. Prix 40 rotules</li>
+<li>Rhinoféroce - 1.6 kilo. Conserve 20 lunes. Prix 90 rotules</li>
+<li>Poney Express - 0.8 kilo. Conserve 8 lunes. Prix 30 rotules</li>
+<li>Tyrannosaure musqué - 1.9 kilo. Conserve 4 lunes. Prix 120 rotules</li>
+<li>Pastèque - 0.1 kilo. Conserve 9 lunes. Prix 3 rotules</li>
+<li>Sauterelle - 0.2 kilo. Conserve 9 lunes. Prix 15 rotules</li>
+<li>Mygale - 0.3 kilo. Conserve 9 lunes. Prix 18 rotules</li>
+</ul>
+
+  <h3>Chasse aux marais</h3>
+
+<ul>
+ <li>Hippopotame gémissant - 1.4 kilo. Conserve 7 lunes. Prix 75 rotules</li>
+<li>Dragon du trias - 0.3 kilo. Conserve 12 lunes. Prix 10 rotules</li>
+<li>Fourmi duveteuse - 0.1 kilo. Conserve 5 lunes. Prix 4 rotules</li>
+<li>Parasaure moqueur - 1.2 kilo. Conserve 5 lunes. Prix 60 rotules</li>
+<li>Grenouille baveuse - 0.2 kilo. Conserve 7 lunes. Prix 6 rotules</li>
+<li>Brontosaure chatoyant - 3 kilo. Conserve 6 lunes. Prix 170 rotules</li>
+<li>Calebasse des marais - 0.4 kilo. Conserve 10 lunes. Prix 20 rotules</li>
+<li>Kangourou - 0.8 kilo. Conserve 8 lunes. Prix 45 rotules</li>
+<li>Plésiodaure édenté - 3.2 kilo. Conserve 6 lunes. Prix 220 rotules</li>
+<li>Champignon - 0.1 kilo. Conserve 10 lunes. Prix 3 rotules</li>
+<li>Mante religieuse - 0.1 kilo. Conserve 9 lunes. Prix 6 rotules</li>
+</ul>
+
+  <h3>Cueillette</h3>
+
+<ul>
+ <li>Courge - 0.5 kilo. Conserve 9 lunes. Prix 31 rotules</li>
+<li>Raisins - 0.2 kilo. Conserve 9 lunes. Prix 15 rotules</li>
+<li>Cerises - 0.1 kilo. Conserve 9 lunes. Prix 9 rotules</li>
+<li>Poire - 0.2 kilo. Conserve 9 lunes. Prix 12 rotules</li>
+<li>Banane - 0.4 kilo. Conserve 9 lunes. Prix 20 rotules</li>
+<li>Bolets - 0.4 kilo. Conserve 9 lunes. Prix 19 rotules</li>
+<li>Amanite - 0.2 kilo. Conserve 6 lunes. Prix 8 rotules</li>
+</ul>
+
+  <h3>Chasse aux mammouths</h3>
+
+<ul>
+ <li>Jeune mammouth - 2.6 kilo. Conserve 10 lunes. Prix 180 rotules</li>
+ <li>Grand mammouth nordique - 3.9 kilo. Conserve 14 lunes. Prix 270 rotules</li>
+ <li>Rhinoféroce polaire - 2.7 kilo. Conserve 19 lunes. Prix 200 rotules</li>
+ <li>Dragon du trias + fourmi duveteuse - mêmes caractéristiques que décrites plus haut</li>
+</ul>
+
 </div>
 
 <script>
@@ -79,7 +137,42 @@ function dormir() {
 
 }
 
+let proiesForet = [
+  "Escargot",
+  "Agneau hargneux",
+  "Tigre à dents de sabre",
+  "Rhinoféroce",
+  "Poney Express",
+  "Tyrannosaure musqué",
+  "Pastèque",
+  "Sauterelle",
+  "Mygale"
+];
 
+function chasserForet() {
+
+  let index = Math.floor(Math.random() * proiesForet.length);
+
+  let proie = proiesForet[index];
+
+  ajouterButin(proie);
+
+}
+
+function ajouterButin(proie) {
+
+  let liste = document.getElementById("listeButin");
+
+  // enlever "Aucun butin" si présent
+  if (liste.children.length === 1 && liste.children[0].textContent === "Aucun butin pour le moment") {
+    liste.innerHTML = "";
+  }
+
+  let item = document.createElement("li");
+  item.textContent = proie;
+
+  liste.appendChild(item);
+}
 
 </script>
 
