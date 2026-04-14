@@ -8,6 +8,8 @@
 
 <h1>Human Epic Revival</h1>
 
+<p id="argent">💰 Rotules : 0</p>
+
 <a href="chasse.html">Chasse</a>
 
 <h2>PERSONNAGE</h2>
@@ -59,6 +61,24 @@
 
 
 <script>
+
+  if (localStorage.getItem("argent") === null) {
+  localStorage.setItem("argent", 0);
+}
+function afficherArgent() {
+  let argent = localStorage.getItem("argent");
+  document.getElementById("argent").textContent = "💰 Rotules : " + argent;
+}
+function ajouterArgent(montant) {
+
+  let argent = parseInt(localStorage.getItem("argent"));
+
+  argent += montant;
+
+  localStorage.setItem("argent", argent);
+
+  afficherArgent();
+}
 
 let message = localStorage.getItem("nouveauMessage");
 
