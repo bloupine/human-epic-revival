@@ -5,6 +5,8 @@
 </head>
 
 <body>
+<p id="argent">💰 Rotules : 0</p>
+
 <a href="index.html">Personnage</a>
 
 <h3>Onglets</h3>
@@ -34,10 +36,10 @@
 </button>
  <p>La forêt est bien sûr le terrain de chasse le plus habituel pour quelqu'un de la préhistoire comme toi. Elle te permet de trouver de gros animaux mais peut être dangereuse.</p>
 
-<button onclick="changerAction('chasse dans les marais')">🌿 Chasse aux marais</button>
+<button onclick="changerAction('chasse dans les marais'); chasserMarais();">🌿Chasse aux marais </button>
  <p>Fantastique les marais, ça grouille de bestioles et de champignons. Le seul danger vraiment sérieux provient des hippopotames qui n'aiment pas être dérangés.</p>
 
-<button onclick="changerAction('cueillette')">🍓 La cueillette</button>
+<button onclick="changerAction('cueillette'); cueillir();">🍓 Cueillette</button>
  <p>Pas d'arme, pas de problème. Tu peux partir à la cueillette; ça te permettra de ramener quelques éléments suffisants pour te rassasier.</p>
 </div>
 
@@ -47,11 +49,22 @@
   <ul id="listeButin">
     <li>Aucun butin pour le moment</li>
   </ul>
+
+  <br>
+
+<button onclick="vendreButin()">Vendre</button>
+<button onclick="stockerButin()">Mettre en inventaire</button>
+
 </div>
 
 <div id="arme">
   <h3>Mon arme</h3>
-  <p>Arme actuelle : Lance en bois</p>
+  <p id="armeActuelleAffichage">Arme actuelle : lance en bois</p>
+<button onclick="changerArme('lance en bois')">Lance en bois</button>
+<button onclick="changerArme('lance en pierre')">Lance en pierre</button>
+<button onclick="changerArme('lance en fer')">Lance en fer</button>
+
+
 </div>
 
 <div id="proies">
@@ -113,6 +126,26 @@
 
 <script>
 
+  if (localStorage.getItem("argent") === null) {
+  localStorage.setItem("argent", 0);
+}
+function afficherArgent() {
+  let argent = localStorage.getItem("argent");
+  document.getElementById("argent").textContent = "💰 Rotules : " + argent;
+}
+function ajouterArgent(montant) {
+
+  let argent = parseInt(localStorage.getItem("argent"));
+
+  argent += montant;
+
+  localStorage.setItem("argent", argent);
+
+  afficherArgent();
+}
+
+let inventaire = [];
+
     function afficherSection(section) {
 
   document.getElementById("terrain").style.display = "none";
@@ -129,14 +162,6 @@ function changerAction(texte) {
   document.getElementById("actionActuelle").textContent = "Actuellement tu fais : " + texte;
 }
 
-function dormir() {
-
-  let message = "Tu as dormi et récupéré de l'énergie.";
-
-  localStorage.setItem("nouveauMessage", message);
-
-}
-
 let proiesForet = [
   "Escargot",
   "Agneau hargneux",
@@ -149,14 +174,127 @@ let proiesForet = [
   "Mygale"
 ];
 
+let proiesMarais = [
+  "Hippopotame gémissant",
+  "Dragon du trias",
+  "Fourmi duveteuse",
+  "Parasaure moqueur",
+  "Grenouille baveuse",
+  "Brontosaure chatoyant",
+  "Calebasse des marais",
+  "Kangourou",
+  "Plésiodaure édenté",
+  "Champignon",
+  "Mante religieuse"
+];
+
+let proiesCueillette = [
+  "Courge",
+  "Raisins",
+  "Cerises",
+  "Poire",
+  "Banane",
+  "Bolets",
+  "Amanite"
+];
+
+let prixProies = {
+  "Escargot": 8,
+  "Agneau hargneux": 20,
+  "Tigre à dents de sabre": 40,
+  "Rhinoféroce": 90,
+  "Poney Express": 30,
+  "Tyrannosaure musqué": 120,
+  "Pastèque": 3,
+  "Sauterelle": 15,
+  "Mygale": 18,
+
+  "Hippopotame gémissant": 75,
+  "Dragon du trias": 10,
+  "Fourmi duveteuse": 4,
+  "Parasaure moqueur": 60,
+  "Grenouille baveuse": 6,
+  "Brontosaure chatoyant": 170,
+  "Calebasse des marais": 20,
+  "Kangourou": 45,
+  "Plésiodaure édenté": 220,
+  "Champignon": 3,
+  "Mante religieuse": 6,
+
+  "Courge": 31,
+  "Raisins": 15,
+  "Cerises": 9,
+  "Poire": 12,
+  "Banane": 20,
+  "Bolets": 19,
+  "Amanite": 8
+};
+
+function dormir() {
+
+  let message = "Tu as dormi et récupéré de l'énergie.";
+
+  localStorage.setItem("nouveauMessage", message);
+
+}
+
 function chasserForet() {
+
+  viderButin();
+
+  let min = armes[armeActuelle].min;
+  let max = armes[armeActuelle].max;
+
+  let quantite = Math.floor(Math.random() * (max - min + 1)) + min;
 
   let index = Math.floor(Math.random() * proiesForet.length);
 
   let proie = proiesForet[index];
 
-  ajouterButin(proie);
+for (let i = 0; i < quantite; i++) {
 
+  // tirage d'une proie
+  let index = Math.floor(Math.random() * proiesForet.length);
+  let proie = proiesForet[index];
+
+  ajouterButin(proie);
+}
+}
+
+function chasserMarais() {
+
+  viderButin();
+
+  let min = armes[armeActuelle].min;
+  let max = armes[armeActuelle].max;
+
+  let quantite = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  for (let i = 0; i < quantite; i++) {
+
+    let index = Math.floor(Math.random() * proiesMarais.length);
+    let proie = proiesMarais[index];
+
+    ajouterButin(proie);
+  }
+}
+
+function cueillir() {
+
+  viderButin();
+
+  let min = armes[armeActuelle].min;
+  let max = armes[armeActuelle].max;
+
+  let quantite = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  for (let i = 0; i < quantite; i++) {
+
+    let index = Math.floor(Math.random() * proiesCueillette.length);
+    let proie = proiesCueillette[index];
+
+    ajouterButin(proie);
+  }
 }
 
 function ajouterButin(proie) {
@@ -172,6 +310,85 @@ function ajouterButin(proie) {
   item.textContent = proie;
 
   liste.appendChild(item);
+}
+
+let armeActuelle = "lance en bois";
+
+let armes = {
+  "lance en bois": { min: 1, max: 3 },
+  "lance en pierre": { min: 2, max: 4 },
+  "lance en fer": { min: 3, max: 5 }
+};
+
+function afficherArme() {
+  document.getElementById("armeActuelleAffichage").textContent =
+    "Arme actuelle : " + armeActuelle;
+}
+
+function changerArme(nouvelleArme) {
+  armeActuelle = nouvelleArme;
+  afficherArme();
+}
+
+function stockerButin() {
+
+  let liste = document.getElementById("listeButin");
+
+  let items = liste.getElementsByTagName("li");
+
+  // vérifier s'il y a du vrai butin
+  if (items.length === 0 || items[0].textContent.includes("Aucun butin")) {
+    alert("Aucun butin à stocker !");
+    return;
+  }
+
+  // parcourir les proies
+  for (let i = 0; i < items.length; i++) {
+    let proie = items[i].textContent;
+    inventaire.push(proie);
+  }
+
+  // vider le butin
+  viderButin();
+
+  // message feedback
+  alert("Butin ajouté à l'inventaire !");
+}
+function vendreButin() {
+
+  let liste = document.getElementById("listeButin");
+  let items = liste.getElementsByTagName("li");
+
+  // vérifier s'il y a du butin
+  if (items.length === 0 || items[0].textContent.includes("Aucun butin")) {
+    alert("Aucun butin à vendre !");
+    return;
+  }
+
+  let total = 0;
+
+  // calculer le prix total
+  for (let i = 0; i < items.length; i++) {
+    let proie = items[i].textContent;
+
+    if (prixProies[proie]) {
+      total += prixProies[proie];
+    }
+  }
+
+  // ajouter l'argent
+  ajouterArgent(total);
+
+  // vider le butin
+  viderButin();
+
+  // feedback
+  alert("Tu as gagné " + total + " rotules !");
+}
+
+function viderButin() {
+  let liste = document.getElementById("listeButin");
+  liste.innerHTML = "<li>Aucun butin pour le moment</li>";
 }
 
 </script>
