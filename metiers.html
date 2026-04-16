@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Métiers</title>
+</head>
+
+<body>
+
+<p id="argent">💰 Rotules : 0</p>
+
+<a href="index.html">Personnage</a>
+<a href="chasse.html">Chasse</a>
+
+<h1>Métiers</h1>
+
+<p id="metierActuel">Métier actuel : Aucun</p>
+
+<div class="metier">
+  <h2>Porteur d'eau</h2>
+
+  <img src="images/eau.png" width="120">
+
+  <p>Porteur d'eau est un métier très enviable, il te permet de bien gagner ta vie et de rapporter 6 litres d'eau par jour chez toi. Ton salaire est mérité car le travail est difficile.</p>
+  <p>Durée de l'embauche : 25 lunes</p>
+  <p>Salaire : 9 rotules de chèvre</p>
+
+ <button onclick="choisirMetier('Porteur d\'eau')">Je choisis ce métier</button>
+</div>
+
+<hr>
+
+<div class="metier">
+  <h2>Ramasseur de bois</h2>
+
+  <img src="images/bois.png" width="120">
+
+  <p>Quel beau métier, tu te promènes en forêt toute la journée, tu rends service aux gens et en plus tu gagnes convenablement ta vie. Il est important de préciser que si tu veux apprendre à faire du feu, tu dois absolument faire ce métier. Chaque jour de travail te rapporte 3 stères de bois. </p>
+  <p>Durée : 4 lunes</p>
+  <p>Salaire : 7 rotules de chèvre</p>
+
+  <button onclick="choisirMetier('Ramasseur de bois')">Je choisis ce métier</button>
+</div>
+
+<div class="metier">
+  <h2>Ramasseur de pierres</h2>
+
+  <img src="images/pierre.png" width="120">
+
+  <p>Ce métier est un peu moins agréable que les autres, mais il te permet d'acquérir des connaissances précieuses sur les minéraux. Si tu veux apprendre à faire des bifaces, tu dois avoir ce métier. </p>
+  <p>Durée : 30 lunes</p>
+  <p>Salaire : 7 rotules de chèvre</p>
+
+  <button onclick="choisirMetier('Ramasseur de pierres')">Je choisis ce métier</button>
+</div>
+
+<script>
+let metiers = {
+  "Porteur d'eau": { salaire: 9, duree: 25 },
+  "Ramasseur de bois": { salaire: 7, duree: 4 },
+  "Ramasseur de pierres": { salaire: 7, duree: 30 }
+};
+
+function choisirMetier(nomMetier) {
+
+  let data = metiers[nomMetier];
+
+  let metier = {
+    nom: nomMetier,
+    salaire: data.salaire,
+    reste: data.duree
+  };
+
+  localStorage.setItem("metier", JSON.stringify(metier));
+
+  afficherMetier();
+
+  travailler();
+}
+
+function travailler() {
+
+  let metier = JSON.parse(localStorage.getItem("metier"));
+
+  if (!metier) return;
+
+  if (metier.reste <= 0) return;
+
+  ajouterArgent(metier.salaire);
+
+  let message = "Tu as travaillé comme " + metier.nom + " et gagné " + metier.salaire + " rotules.";
+
+  localStorage.setItem("nouveauMessage", message);
+
+  metier.reste -= 1;
+
+  localStorage.setItem("metier", JSON.stringify(metier));
+}
+
+function afficherMetier() {
+
+  let metier = JSON.parse(localStorage.getItem("metier"));
+
+  let zone = document.getElementById("metierActuel");
+
+  if (!metier) {
+    zone.textContent = "Métier actuel : Aucun";
+    return;
+  }
+
+  zone.textContent = "Métier actuel : " + metier.nom + " (" + metier.reste + " jours restants)";
+}
+
+function initialiserArgent() {
+  if (localStorage.getItem("argent") === null) {
+    localStorage.setItem("argent", "0");
+  }
+}
+
+function afficherArgent() {
+  let argent = localStorage.getItem("argent");
+  document.getElementById("argent").textContent =
+    "💰 Rotules : " + argent;
+}
+
+function ajouterArgent(montant) {
+  let argent = parseInt(localStorage.getItem("argent"));
+  argent += montant;
+  localStorage.setItem("argent", argent);
+  afficherArgent();
+}
+
+afficherMetier();
+
+initialiserArgent();
+afficherArgent();
+
+</script>
+
+</body>
+</html>
