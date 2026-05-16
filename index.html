@@ -11,6 +11,8 @@
 <p id="argent">💰 Rotules : 0</p>
 
 <a href="chasse.html">Chasse</a>
+<a href="metiers.html">Métiers</a>
+<a href="maison.html">Maison</a>
 
 <h2>PERSONNAGE</h2>
 
@@ -32,7 +34,7 @@
 
 <p><em>Tout va bien pour toi, tu es en pleine santé.</em>
 
-<<h2>VIE SOCIALE</h2>
+<h2>VIE SOCIALE</h2>
 
 <h3>Écrire un message</h3>
 <textarea rows="4" cols="50"></textarea>
@@ -59,12 +61,18 @@
 
 <p>Raconte ici l’histoire de ton personnage...</p>
 
+<script src="inventaire.js"></script>
 
 <script>
 
+initialiserInventaire();
+
+function initialiserArgent() {
   if (localStorage.getItem("argent") === null) {
-  localStorage.setItem("argent", 0);
+    localStorage.setItem("argent", "0");
+  }
 }
+
 function afficherArgent() {
   let argent = localStorage.getItem("argent");
   document.getElementById("argent").textContent = "💰 Rotules : " + argent;
@@ -98,6 +106,9 @@ if (message) {
 
   localStorage.removeItem("nouveauMessage");
 }
+
+initialiserArgent();
+afficherArgent();
 
 </script>
 </body>

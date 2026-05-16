@@ -8,6 +8,8 @@
 <p id="argent">💰 Rotules : 0</p>
 
 <a href="index.html">Personnage</a>
+<a href="metiers.html">Métiers</a>
+<a href="maison.html">Maison</a>
 
 <h3>Onglets</h3>
 
@@ -124,11 +126,20 @@
 
 </div>
 
+<script src="inventaire.js"></script>
+
+
+
 <script>
 
+initialiserInventaire();
+
+function initialiserArgent() {
   if (localStorage.getItem("argent") === null) {
-  localStorage.setItem("argent", 0);
+    localStorage.setItem("argent", "0");
+  }
 }
+
 function afficherArgent() {
   let argent = localStorage.getItem("argent");
   document.getElementById("argent").textContent = "💰 Rotules : " + argent;
@@ -144,9 +155,7 @@ function ajouterArgent(montant) {
   afficherArgent();
 }
 
-let inventaire = [];
-
-    function afficherSection(section) {
+function afficherSection(section) {
 
   document.getElementById("terrain").style.display = "none";
   document.getElementById("butin").style.display = "none";
@@ -345,7 +354,9 @@ function stockerButin() {
   // parcourir les proies
   for (let i = 0; i < items.length; i++) {
     let proie = items[i].textContent;
-    inventaire.push(proie);
+
+   ajouterObjet("nourriture", proie, 0);
+
   }
 
   // vider le butin
@@ -390,6 +401,8 @@ function viderButin() {
   let liste = document.getElementById("listeButin");
   liste.innerHTML = "<li>Aucun butin pour le moment</li>";
 }
+initialiserArgent();
+afficherArgent();
 
 </script>
 

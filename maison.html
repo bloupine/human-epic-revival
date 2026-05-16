@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+
+<html>
+
+<head>
+    
+<style>
+
+.categorie {
+  display: flex;
+  gap: 20px;
+}
+
+.objet {
+  border: 1px solid black;
+  padding: 10px;
+  width: 120px;
+}
+
+</style>
+
+<title>Maison</title>
+
+</head>
+
+<body>
+
+<h1>Maison</h1>
+
+<a href="index.html">Personnage</a>
+<a href="chasse.html">Chasse</a>
+<a href="metiers.html">Métiers</a>
+
+<h2>Nourriture</h2>
+<div id="nourriture" class="categorie"></div>
+
+<h2>Armes</h2>
+<div id="armes" class="categorie"></div>
+
+<h2>Hygiène</h2>
+<div id="hygiene" class="categorie"></div>
+
+<h2>Sécurité</h2>
+<div id="securite" class="categorie"></div>
+
+<script src="inventaire.js"></script>
+
+<script>
+initialiserInventaire();
+afficherInventaire();
+</script>
+
+</body>
+</html>

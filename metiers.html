@@ -24,8 +24,10 @@
   <p>Durée de l'embauche : 25 lunes</p>
   <p>Salaire : 9 rotules de chèvre</p>
 
- <button onclick="choisirMetier('Porteur d\'eau')">Je choisis ce métier</button>
-</div>
+ <button id="btnPorteur"
+onclick="choisirMetier('Porteur d\'eau')">Je choisis ce métier</button>
+
+<button onclick="travailler()">Travailler</button></div>
 
 <hr>
 
@@ -38,7 +40,9 @@
   <p>Durée : 4 lunes</p>
   <p>Salaire : 7 rotules de chèvre</p>
 
-  <button onclick="choisirMetier('Ramasseur de bois')">Je choisis ce métier</button>
+  <button id="btnBois"onclick="choisirMetier('Ramasseur de bois')">Je choisis ce métier</button>
+
+  <button onclick="travailler()">Travailler</button></div>
 </div>
 
 <div class="metier">
@@ -50,10 +54,17 @@
   <p>Durée : 30 lunes</p>
   <p>Salaire : 7 rotules de chèvre</p>
 
-  <button onclick="choisirMetier('Ramasseur de pierres')">Je choisis ce métier</button>
+  <button id="btnPierres"onclick="choisirMetier('Ramasseur de pierres')">Je choisis ce métier</button>
+
+  <button onclick="travailler()">Travailler</button></div>
 </div>
 
+<script src="inventaire.js"></script>
+
 <script>
+
+initialiserInventaire();
+
 let metiers = {
   "Porteur d'eau": { salaire: 9, duree: 25 },
   "Ramasseur de bois": { salaire: 7, duree: 4 },
@@ -62,6 +73,15 @@ let metiers = {
 
 function choisirMetier(nomMetier) {
 
+  let metierActuel = JSON.parse(localStorage.getItem("metier"));
+
+  if (metierActuel) {
+
+  alert("Tu as déjà un métier !");
+
+  return;
+}
+  
   let data = metiers[nomMetier];
 
   let metier = {
@@ -74,10 +94,32 @@ function choisirMetier(nomMetier) {
 
   afficherMetier();
 
-  travailler();
+}
+
+function obtenirDateAujourdhui() {
+
+  let maintenant = new Date();
+
+  return maintenant.toISOString().split("T")[0];
+}
+
+function aDejaTravailleAujourdHui() {
+
+  let derniereDate = localStorage.getItem("dernierTravail");
+
+  let aujourdHui = obtenirDateAujourdhui();
+
+  return derniereDate === aujourdHui;
 }
 
 function travailler() {
+
+  if (aDejaTravailleAujourdHui()) {
+
+  alert("Tu as déjà travaillé aujourd'hui !");
+
+  return;
+}
 
   let metier = JSON.parse(localStorage.getItem("metier"));
 
@@ -94,6 +136,8 @@ function travailler() {
   metier.reste -= 1;
 
   localStorage.setItem("metier", JSON.stringify(metier));
+
+  localStorage.setItem("dernierTravail", obtenirDateAujourdhui());
 }
 
 function afficherMetier() {
@@ -129,10 +173,23 @@ function ajouterArgent(montant) {
   afficherArgent();
 }
 
+function verifierMetier() {
+
+  let metier = JSON.parse(localStorage.getItem("metier"));
+
+  if (!metier) return;
+
+  document.getElementById("btnPorteur").disabled = true;
+  document.getElementById("btnBois").disabled = true;
+  document.getElementById("btnPierres").disabled = true;
+}
+
 afficherMetier();
 
 initialiserArgent();
 afficherArgent();
+
+verifierMetier();
 
 </script>
 
