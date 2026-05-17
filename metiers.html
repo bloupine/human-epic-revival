@@ -10,6 +10,7 @@
 
 <a href="index.html">Personnage</a>
 <a href="chasse.html">Chasse</a>
+<a href="maison.html">Maison</a>
 
 <h1>Métiers</h1>
 
@@ -59,6 +60,7 @@ onclick="choisirMetier('Porteur d\'eau')">Je choisis ce métier</button>
   <button onclick="travailler()">Travailler</button></div>
 </div>
 
+<script src="argent.js"></script>
 <script src="inventaire.js"></script>
 
 <script>
@@ -152,25 +154,6 @@ function afficherMetier() {
   }
 
   zone.textContent = "Métier actuel : " + metier.nom + " (" + metier.reste + " jours restants)";
-}
-
-function initialiserArgent() {
-  if (localStorage.getItem("argent") === null) {
-    localStorage.setItem("argent", "0");
-  }
-}
-
-function afficherArgent() {
-  let argent = localStorage.getItem("argent");
-  document.getElementById("argent").textContent =
-    "💰 Rotules : " + argent;
-}
-
-function ajouterArgent(montant) {
-  let argent = parseInt(localStorage.getItem("argent"));
-  argent += montant;
-  localStorage.setItem("argent", argent);
-  afficherArgent();
 }
 
 function verifierMetier() {

@@ -1,3 +1,4 @@
+
 function initialiserInventaire() {
 
   if (!localStorage.getItem("inventaire")) {
@@ -25,15 +26,23 @@ function ajouterObjet(categorie, nom, duree = 0) {
 
   let inv = getInventaire();
 
-  let objet = {
-    id: Date.now() + Math.random(),
+  let item = {
     nom: nom,
-    duree: duree
+    qty: 1,
+    duree: ITEMS[nom].duree || 0
   };
 
-  inv[categorie].push(objet);
+  if (!inv[categorie]) {
+    inv[categorie] = [];
+  }
 
-  setInventaire(inv);
+  inv[categorie].push(item);
+
+  saveInventaire(inv);
+}
+
+function saveInventaire(inventaire) {
+  localStorage.setItem("inventaire", JSON.stringify(inventaire));
 }
 
 function afficherInventaire() {
@@ -49,27 +58,93 @@ function afficherInventaire() {
 function afficherCategorie(categorie, liste) {
 
   let div = document.getElementById(categorie);
+  if (!div) return;
+
   div.innerHTML = "";
 
-  if (liste.length === 0) {
-    div.innerHTML = "<p>Vide</p>";
-    return;
-  }
+ for (let index = 0; index < liste.length; index++) {
 
-  for (let item of liste) {
+    let item = liste[index];
+
+    let info = ITEMS[item.nom];
 
     let bloc = document.createElement("div");
 
     bloc.classList.add("objet");
 
-    bloc.innerHTML = `
-      <p><b>${item.nom}</b></p>
-      <p>Durée : ${item.duree}</p>
-      <button onclick="manger('${item.id}')">Action</button>
-    `;
+    let boutons = "";
 
+    if (categorie === "nourriture") {
+
+     boutons += `
+    <button onclick="mangerObjet('${categorie}', ${index})">
+      Manger
+    </button>
+  `;
+
+     boutons += `
+    <button onclick="vendreObjet('${categorie}', ${index})">
+      Vendre
+    </button>
+  `;
+}
+
+    if (categorie === "armes") {
+
+    boutons += `
+    <button onclick="equiperArme(${index})">
+      Utiliser
+    </button>
+  `;
+}
+
+    bloc.innerHTML = `
+     <p><b>${item.nom}</b></p>
+    <p>Prix : ${info ? info.prix : "?"}</p>
+    <p>Durée : ${item.duree}</p>
+
+    ${boutons}
+`;
     div.appendChild(bloc);
   }
 }
 
+function mangerObjet(categorie, index) {
 
+  let inv = getInventaire();
+
+  let objet = inv[categorie][index];
+
+  inv[categorie].splice(index, 1);
+
+  saveInventaire(inv);
+
+  localStorage.setItem(
+    "nouveauMessage",
+    "Tu as mangé : " + objet.nom
+  );
+
+  afficherInventaire();
+}
+
+function vendreObjet(categorie, index) {
+
+  let inv = getInventaire();
+
+  let objet = inv[categorie][index];
+
+  let info = ITEMS[objet.nom];
+
+  ajouterArgent(info.prix);
+
+  inv[categorie].splice(index, 1);
+
+  saveInventaire(inv);
+
+  localStorage.setItem(
+    "nouveauMessage",
+    "Tu as vendu : " + objet.nom
+  );
+
+  afficherInventaire();
+}
